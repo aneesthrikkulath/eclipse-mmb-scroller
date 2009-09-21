@@ -125,8 +125,7 @@ public class StyledTextScroller {
 							recalculateScrollingSpeed(verticalSpeed,
 									horizontalSpeed);
 						} else {
-							horizontalScrollDistance = verticalScrollDistance = 0;
-							sleepTime = 100;
+							resetScrollingSpeed();
 						}
 					}
 				}
@@ -160,6 +159,11 @@ public class StyledTextScroller {
 					* horizontalSpeed);
 
 			scrollStarted = true;
+		}
+
+		private void resetScrollingSpeed() {
+			horizontalScrollDistance = verticalScrollDistance = 0;
+			sleepTime = 100;
 		}
 
 		private int absDec(int value, int decrement) {
@@ -199,8 +203,10 @@ public class StyledTextScroller {
 		public synchronized void activate(StyledText widget,
 				Point cursorLocation) {
 			initialLocation = currentLocation = cursorLocation;
-			scrollStarted = false;
 			currentWidget = widget;
+			scrollStarted = false;
+			resetScrollingSpeed();
+
 			if (isAlive()) {
 				notify();
 			} else {
@@ -478,7 +484,8 @@ public class StyledTextScroller {
 		if (!isActive())
 			return;
 
-		fScrollTool.setVisible(false);
+		fScrollTool.dispose();
+		fScrollTool = null;
 		fScrollingThread.deactivate();
 	}
 
