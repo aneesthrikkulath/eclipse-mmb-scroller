@@ -274,6 +274,8 @@ public class StyledTextScroller {
 					deactivate();
 				}
 				break;
+			case SWT.Dispose:
+				StyledTextScroller.this.dispose();
 			}
 		}
 
@@ -310,6 +312,7 @@ public class StyledTextScroller {
 		fDisplay = display;
 		fDisplay.addFilter(SWT.MouseDown, listener);
 		fDisplay.addFilter(SWT.MouseUp, listener);
+		fDisplay.addFilter(SWT.Dispose, listener);
 	}
 
 	/**
@@ -392,7 +395,7 @@ public class StyledTextScroller {
 		if (fScrollerImage != null)
 			fScrollerImage.dispose();
 		if (fScrollTool != null)
-			fScrollTool.close();
+			fScrollTool.dispose();
 		for (Iterator iterator = fScrolledWidgets.iterator(); iterator
 				.hasNext();) {
 			StyledText widget = (StyledText) iterator.next();
@@ -404,6 +407,7 @@ public class StyledTextScroller {
 		scrolledDisplays.remove(fDisplay);
 		fDisplay.removeFilter(SWT.MouseDown, listener);
 		fDisplay.removeFilter(SWT.MouseUp, listener);
+		fDisplay.removeFilter(SWT.Dispose, listener);
 	}
 
 	private boolean isActive() {
